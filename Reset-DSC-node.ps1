@@ -1,4 +1,4 @@
-﻿param (
+param (
     [parameter(Mandatory=$false)]
     [string]$resourceGroupName = 'RG_Vikas.Pandey',
     [string]$automationAccountName = 'auto-viki-dev-01',
@@ -34,12 +34,12 @@ Write-Output "Checking DSC node details"
 Get-AzAutomationDscNode -ResourceGroupName $resourceGroupName -AutomationAccountName $automationAccountName | ft -wrap
 
 # Check if the node is up and running
-$VmPowerStatus = ((get-azvm -ResourceGroupName $resourceGroupName -Name $nodeName -Status).Statuses | where{$_.code -like "*PowerState*"}).displaystatus
-if($VmPowerStatus -eq "VM running"){
-    Write-Output "Node $nodeName is running, status '$VmPowerStatus'"
+$vmPowerStatus = (get-azvm -Name $nodeName -Status).PowerState
+if($vmPowerStatus -eq "VM running"){
+    Write-Output "Node $nodeName is running, status '$vmPowerStatus'"
 }
 else{
-    Write-Output "Node $nodeName is not running and current state is '$VmPowerStatus', please troubleshoot further, exiting"
+    Write-Output "Node $nodeName is not running and current state is '$vmPowerStatus', please troubleshoot further, exiting"
     exit
 }
 
